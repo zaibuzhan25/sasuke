@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SASUKE — Visual First</title>
+<link rel="icon" type="image/svg+xml" href="images/logo-sasuke.svg">
+  <!-- 外部库 -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="css/style.css">
+<style>
+  /* 灯箱 */
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:10001;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease;cursor:none;padding:40px}
+  .lightbox.open{opacity:1;visibility:visible}
+  .lightbox img{max-width:90vw;max-height:88vh;border-radius:8px;box-shadow:0 30px 80px rgba(0,0,0,0.6);transform:scale(.8);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+  .lightbox.open img{transform:scale(1)}
+  .lightbox-close{position:absolute;top:24px;right:32px;color:#fff;font-size:40px;line-height:1;cursor:pointer;user-select:none;transition:transform .3s,color .3s}
+  .lightbox-close:hover{color:#ff2a2a;transform:rotate(90deg)}
+</style>
+</head>
+<body>
+  <div class="progress-bar"></div>
+  <div class="preloader">
+    <div class="preloader-text">佐 助</div>
+  </div>
+  <div class="particle-container"></div>
+
+  <div class="cursor"></div>
+  <div class="cursor-dot"></div>
+  <div class="grid-bg"></div>
+
+  <nav>
+    <div class="logo">佐助<span>.</span></div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-title">
+      <span class="line"><span class="line-inner">be wild!</span></span>
+      <span class="line"><span class="line-inner red">creative!</span></span>
+      <span class="line"><span class="line-inner yellow">and cool!</span></span>
+    </div>
+    <div class="hero-bottom">
+      <p class="hero-subtitle">
+        我是一名视觉设计者，专注于品牌视觉、动态图形与界面表达。<br/>
+        让复杂的信息变成有冲击力的视觉语言。
+      </p>
+      <div class="scroll-label">
+        <span class="scroll-line"></span>
+        <span>Follow me</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="section-label">— ABOUT ME</div>
+    <h2>Hello, I'm <em>Uchiha Sasuke</em>.<br/>A genius shinobi from the Uchiha clan.</h2>
+    <p class="about-text">
+      我相信好的视觉不是装饰，而是信息本身。无论是品牌页面、动态短片，还是界面系统，
+      我都会先建立视觉秩序，再加入情绪、节奏和记忆点。
+    </p>
+    <div class="skills">
+      <div class="skill-card">
+        <div class="skill-num">01</div>
+        <h3>Graphic Design</h3>
+        <p>品牌视觉、海报、KV、排版系统，把信息做成有辨识度的视觉语言。</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-num">02</div>
+        <h3>Motion & Video</h3>
+        <p>动态图形、短片剪辑、节奏包装，让画面更有速度感和情绪张力。</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-num">03</div>
+        <h3>UI / UX Design</h3>
+        <p>界面结构、信息层级、交互表达，让产品既好看也更好用。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="marquee">
+    <div class="marquee-track">
+      <div class="marquee-item">
+        <div class="marquee-text">Amaterasu</div>
+        <div class="marquee-text"><b>Amaterasu</b></div>
+        <div class="marquee-text">Amaterasu</div>
+        <div class="marquee-text"><b>Amaterasu</b></div>
+        <div class="marquee-text">Amaterasu</div>
+        <div class="marquee-text"><b>Amaterasu</b></div>
+        <div class="marquee-text">Amaterasu</div>
+        <div class="marquee-text"><b>Amaterasu</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="portfolio" id="work">
+    <div class="portfolio-head">
+      <div>
+        <div class="section-label">— PORTFOLIO</div>
+        <h2>Selected Work.</h2>
+      </div>
+      <div class="portfolio-filter">
+        <span class="chip active" data-filter="all">All</span>
+        <span class="chip" data-filter="motion">Motion</span>
+        <span class="chip" data-filter="brand">Brand</span>
+        <span class="chip" data-filter="ui">UI</span>
+      </div>
+    </div>
+
+    <div class="video-list">
+      <div class="video-row" data-category="motion">
+        <div class="video-num">01</div>
+        <div class="video-title">Rogue <span>Ninja</span></div>
+        <div class="video-meta">Motion / 2025</div>
+      </div>
+      <div class="video-row" data-category="brand">
+        <div class="video-num">02</div>
+        <div class="video-title">Akatsuki <span>Associate</span></div>
+        <div class="video-meta">Brand / 2025</div>
+      </div>
+      <div class="video-row" data-category="ui">
+        <div class="video-num">03</div>
+        <div class="video-title">The Last <span>Uchiha</span></div>
+        <div class="video-meta">UI / 2024</div>
+      </div>
+      <div class="video-row" data-category="motion">
+        <div class="video-num">04</div>
+        <div class="video-title">Reincarnation <span>of Indra</span></div>
+        <div class="video-meta">Motion / 2024</div>
+      </div>
+    </div>
+
+    <div class="gallery">
+      <div class="gallery-card" data-category="brand">
+        <div class="cover" style="background-image:url(images/sasuke-1.jpg)"></div>
+        <div class="info"><h4>GreatGreatHawk</h4><p>Poster / Typography</p></div>
+      </div>
+      <div class="gallery-card" data-category="brand">
+        <div class="cover" style="background-image:url(images/sasuke-2.jpg)"></div>
+        <div class="info"><h4>Kirin</h4><p>Brand / Visual System</p></div>
+      </div>
+      <div class="gallery-card" data-category="brand">
+        <div class="cover" style="background-image:url(images/sasuke-3.jpg)"></div>
+        <div class="info"><h4>Kobe Bryant</h4><p>Editorial / Layout</p></div>
+      </div>
+      <div class="gallery-card" data-category="motion">
+        <div class="cover" style="background-image:url(images/sasuke-4.jpg)"></div>
+        <div class="info"><h4>Durex</h4><p>Motion Keyframe</p></div>
+      </div>
+      <div class="gallery-card" data-category="ui">
+        <div class="cover" style="background-image:url(images/sasuke-5.jpg)"></div>
+        <div class="info"><h4>Samurai</h4><p>Experimental / UI</p></div>
+      </div>
+      <div class="gallery-card" data-category="brand">
+        <div class="cover" style="background-image:url(images/sasuke-6.jpg)"></div>
+        <div class="info"><h4>It is Sasuke in person</h4><p>Campaign / KV</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="section-label">— CONTACT</div>
+    <h2>Let's make<br/>something <em>loud.</em></h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p>如果你有一个需要更强视觉表达的项目，欢迎联系我。我会优先关注概念、节奏和最终呈现效果。</p>
+        <p>Email: <a href="mailto:zuohzubenren@foxmail.com">zuohzubenren@foxmail.com</a></p>
+        <p>WeChat: <a href="#">************</a></p>
+        <p>QQ: <a href="https://qm.qq.com/q/h3hnWXeZzi">236190354</a></p>
+      </div>
+      <div class="qrcodes">
+        <div class="qr-card">
+          <div class="box"><img src="images/QR%20code.jpg" alt="二维码" style="width:100%;height:100%;object-fit:cover;border-radius:6px"></div>
+          <h5>QQ咨询</h5>
+          <span>扫码添加联系方式</span>
+        </div>
+        <div class="qr-card">
+          <div class="box"><img src="images/QR%20code.jpg" alt="二维码" style="width:100%;height:100%;object-fit:cover;border-radius:6px"></div>
+          <h5>作品投递</h5>
+          <span>接收合作与简历</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">&times;</span>
+  <img id="lightboxImg" src="" alt="作品大图">
+</div>
+
+<footer>
+    <div>© 2026 SASUKE. All rights reserved.</div>
+    <div>Visual First.</div>
+  </footer>
+
+  <!-- 引入脚本 -->
+  <script src="js/script.js"></script>
+<script>
+(function(){
+  const lb=document.getElementById('lightbox');
+  const lbImg=document.getElementById('lightboxImg');
+  const lbClose=document.getElementById('lightboxClose');
+
+  function openLightbox(src){
+    lbImg.src=src;
+    lb.classList.add('open');
+  }
+  function closeLightbox(){ lb.classList.remove('open'); }
+
+  // 作品卡片 + 二维码 都可点击放大
+  function srcFromTarget(el){
+    if(el.tagName==='IMG') return el.src;
+    const cover=el.querySelector('.cover');
+    if(cover){
+      const bg=cover.style.backgroundImage||getComputedStyle(cover).backgroundImage;
+      const m=bg.match(/url\(["']?([^"')]+)["']?\)/);
+      if(m) return m[1];
+    }
+    return null;
+  }
+  document.querySelectorAll('.gallery-card, .qr-card .box img').forEach(el=>{
+    el.addEventListener('click',()=>{ const s=srcFromTarget(el); if(s) openLightbox(s); });
+  });
+
+  lb.addEventListener('click',e=>{ if(e.target===lb||e.target===lbClose) closeLightbox(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLightbox(); });
+})();
+</script>
+<script>
+(function(){
+  const logo=document.querySelector('nav .logo');
+  if(!logo) return;
+  let clicks=0,timer=null;
+  logo.addEventListener('click',()=>{
+    clicks++;
+    clearTimeout(timer);
+    timer=setTimeout(()=>{clicks=0;},1200); // 1.2秒内连续点击
+    if(clicks>=3){ window.location.href='jar.html'; }
+  });
+})();
+</script>
+</body>
+</html>

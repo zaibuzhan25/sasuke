@@ -15,6 +15,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{
+    -webkit-text-size-adjust:100%;text-size-adjust:100%;
     background:radial-gradient(ellipse at 50% 0%,#161616,#0a0a0a 70%);
     color:var(--text);
     font-family:"Inter","PingFang SC","Microsoft YaHei",sans-serif;
@@ -56,8 +57,8 @@
     <button id="resetBtn">重新装缸</button>
   </div>
 
-  <!-- 成员数据 + 物理逻辑 -->
-  <script src="js/members.js"></script>
-  <script src="js/jar.js"></script>
+  <!-- 成员数据 + 物理逻辑（v=20260929 用于强制刷新手机端缓存） -->
+  <script src="js/members.js?v=20260929"></script>
+  <script src="js/jar.js?v=20260929"></script>
 </body>
 </html>

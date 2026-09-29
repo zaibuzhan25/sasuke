@@ -16,7 +16,7 @@
 
   // 球半径（随人数自适应）
   const n = MEMBERS.length;
-  const R = Common.clamp(Math.round(jarW / Math.sqrt(n) / (W < 700 ? 2.7 : 2.4)), W < 700 ? 19 : 24, 42);
+  const R = Common.clamp(Math.round(jarW / Math.sqrt(n) / (W < 700 ? 2.2 : 2.1)), W < 700 ? 24 : 28, W < 700 ? 40 : 50);
 
   // ---- 引擎 ----
   const engine = Engine.create();
@@ -112,6 +112,9 @@
       ctx.beginPath();
       ctx.arc(x, y, r - 1, 0, Math.PI * 2);
       ctx.clip();
+      // 高质量缩放：大图缩到小球上不再发糊
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       if (ball.img && ball.img.complete && ball.img.naturalWidth) {
         const iw = ball.img.naturalWidth, ih = ball.img.naturalHeight;
         const scale = Math.max((r * 2) / iw, (r * 2) / ih);
@@ -132,19 +135,37 @@
       ctx.stroke();
       ctx.restore();
 
-      // 昵称（浮在球上方）
+      // 昵称（浮在球上方：字号随球变大、加粗；超长自动缩字号/省略，始终保持清晰一行）
       const name = ball.member.name;
       ctx.save();
-      ctx.font = Math.round(Math.max(10, ball.r * 0.42)) + 'px "PingFang SC","Microsoft YaHei",sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      const tw = ctx.measureText(name).width;
-      const ly = y - r - 11;
-      ctx.fillStyle = 'rgba(0,0,0,0.55)';
-      roundRect(ctx, x - tw / 2 - 7, ly - 9, tw + 14, 18, 9);
+      const fam = '"PingFang SC","Microsoft YaHei",sans-serif';
+      let fs = Math.max(12, Math.round(r * 0.5));
+      let label = name;
+      const maxW = Math.min(jarW * 0.6, r * 3.8 + 40, 220);
+      ctx.font = '600 ' + fs + 'px ' + fam;
+      let tw = ctx.measureText(label).width;
+      if (tw > maxW) {
+        const shrink = Math.floor(fs * maxW / tw);
+        if (shrink >= 11) {
+          fs = shrink;
+        } else {
+          fs = 11;
+          ctx.font = '600 11px ' + fam;
+          while (label.length > 1 && ctx.measureText(label + '…').width > maxW) label = label.slice(0, -1);
+          label += '…';
+        }
+        ctx.font = '600 ' + fs + 'px ' + fam;
+        tw = ctx.measureText(label).width;
+      }
+      const ph = Math.round(fs * 1.7);          // 胶囊高度随字号
+      const ly = y - r - ph / 2 - 6;
+      ctx.fillStyle = 'rgba(0,0,0,0.62)';
+      roundRect(ctx, x - tw / 2 - 8, ly - ph / 2, tw + 16, ph, ph / 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.fillText(name, x, ly);
+      ctx.fillText(label, x, ly + 0.5);
       ctx.restore();
     });
   });

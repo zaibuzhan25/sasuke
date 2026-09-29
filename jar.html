@@ -30,15 +30,15 @@
   .title span{color:var(--accent)}
   .tip{color:var(--muted);font-size:13px;letter-spacing:1px}
   #stage{position:fixed;inset:0;}
-  .btn-row{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:14px}
+  .btn-row{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:12px}
   button{
     background:transparent;color:var(--text);
     border:1px solid rgba(255,255,255,0.2);border-radius:999px;
-    padding:10px 22px;font-size:13px;letter-spacing:1px;cursor:pointer;
+    padding:11px 24px;font-size:14px;letter-spacing:1px;cursor:pointer;white-space:nowrap;
     transition:all .3s;
   }
   button:hover{border-color:var(--accent);color:var(--accent)}
-  @media(max-width:700px){ header{padding:18px 20px} .tip{display:none} }
+  @media(max-width:700px){ header{padding:16px 18px} .title{font-size:17px;letter-spacing:2px} .tip{display:none} .btn-row{gap:10px} button{padding:10px 20px;font-size:13px} }
 </style>
 </head>
 <body>

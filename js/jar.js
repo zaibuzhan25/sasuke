@@ -7,16 +7,16 @@
   const H = window.innerHeight;
 
   // 缸尺寸
-  const jarW = Math.min(920, W - 60);
-  const floorY = H - 110;
+  const jarW = Math.min(920, W - (W < 700 ? 28 : 60));
+  const floorY = H - (W < 700 ? 132 : 110);
   const wallT = 60;                 // 墙厚度（视觉外）
   const leftX = (W - jarW) / 2;
   const rightX = leftX + jarW;
-  const jarTop = floorY - Math.min(560, H * 0.62);
+  const jarTop = floorY - (W < 700 ? H * 0.70 : Math.min(560, H * 0.62));
 
   // 球半径（随人数自适应）
   const n = MEMBERS.length;
-  const R = Common.clamp(Math.round(jarW / Math.sqrt(n) / 2.4), 24, 42);
+  const R = Common.clamp(Math.round(jarW / Math.sqrt(n) / (W < 700 ? 2.7 : 2.4)), W < 700 ? 19 : 24, 42);
 
   // ---- 引擎 ----
   const engine = Engine.create();
@@ -64,7 +64,7 @@
       height: H,
       wireframes: false,
       background: 'transparent',
-      pixelRatio: 1
+      pixelRatio: Math.min(window.devicePixelRatio || 1, 2.5)
     }
   });
   Matter.Render.run(render);
@@ -135,7 +135,7 @@
       // 昵称（浮在球上方）
       const name = ball.member.name;
       ctx.save();
-      ctx.font = '12px "PingFang SC","Microsoft YaHei",sans-serif';
+      ctx.font = Math.round(Math.max(10, ball.r * 0.42)) + 'px "PingFang SC","Microsoft YaHei",sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       const tw = ctx.measureText(name).width;
@@ -168,7 +168,25 @@
   World.add(world, mouseConstraint);
   render.mouse = mouse;
 
-  // 重叠时强制抓取“最上层”球，保证拖谁是谁
+  // 手机高清画布会被放大显示，按“世界尺寸/实际显示尺寸”换算坐标（桌面为1，不影响）
+  function syncMouseScale() {
+    const cv = render.canvas;
+    const rectW = cv.clientWidth || cv.width;
+    const rectH = cv.clientHeight || cv.height;
+    const pr = mouse.pixelRatio || 1;
+    // 与 Mouse._getRelativeMousePosition 的分母严格抵消，使坐标恒为 CSS 像素
+    const fx = (rectW / cv.width) * pr;
+    const fy = (rectH / cv.height) * pr;
+    mouse.scale.x = fx;
+    mouse.scale.y = fy;
+    mouse.offset.x = 0;
+    mouse.offset.y = 0;
+  }
+  syncMouseScale();
+  window.addEventListener('resize', syncMouseScale);
+  window.addEventListener('touchstart', syncMouseScale, { passive: true });
+
+  // 重叠时在开始拖拽瞬间强制改抓“最上层”球
   Events.on(mouseConstraint, 'startdrag', () => {
     const pos = mouse.position;
     const hit = balls.filter(b => {
